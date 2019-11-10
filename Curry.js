@@ -22,17 +22,27 @@ console.log(add()(2)(3))
  * tapi sabar dulu nih heheh,currying bisa jadi kurang flexible  karena  terlalu banyak nested di dalam function
  */
 
- function makeCurry(uncurried) {
-     let params = Array.prototype.slice.call(arguments,1)
-     return function () {
-         return uncurried.apply(this,params.concat(
-             Array.prototype.slice.call(arguments,0)
-         ))
-     }
- }
+//  function makeCurry(uncurried) {
+//      let params = Array.prototype.slice.call(arguments,1)
+//      return function () {
+//          return uncurried.apply(this,params.concat(
+//              Array.prototype.slice.call(arguments,0)
+//          ))
+//      }
+//  }
 
- let greeting = function(greet, title, education, name) {
-    return greet + title + education + name;
-  };
- let greetHello2 = makeCurry(greeting, "Hello", "Mr.");
- console.log(greetHello2('S.kom', 'Budi')); // Hello Mr.Budi S.kom
+//  let greeting = function(greet, title, education, name) {
+//     return greet + title + education + name;
+//   };
+//  let greetHello2 = makeCurry(greeting, "Hello", "Mr.");
+//  console.log(greetHello2('S.kom', 'Budi')); // Hello Mr.Budi S.kom
+
+
+ function curry(fn){
+     return function curried(...args) {//pakai spread operator
+        if(args.length >= fn.length) return fn.apply(this,args) 
+         return function(...args2) {
+             return curried.apply(this,args.concat(args2))
+         } 
+     }  
+ }
